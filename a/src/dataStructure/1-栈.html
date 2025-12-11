@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script> 
+        class Stack {
+            #items = [];
+            constructor(initialData = []) {
+                this.#items = [...initialData];
+            }
+            // #items = [];
+            
+            push (data) {
+                return this.#items.push(data)
+            }
+            pop (data) {
+                return this.#items.pop(data)
+            }
+
+            clear () {
+                this.#items = []
+                return this.#items
+            }
+            
+            size () {
+                return this.#items.length
+            }
+            isEmpty () {
+                return this.#items.length === 0
+            }
+            peek () {
+                // return this.#items[this.#items.length - 1]
+                return this.#items.at(-1)
+            }
+            reverse () {
+                return this.#items.reverse()
+            }
+            join (params) {
+                return this.#items.join(params)
+            }
+            get () {
+                return this.#items;
+            }
+        }
+        
+
+        let stack = new Stack();
+    </script>
+</body>
+</html>

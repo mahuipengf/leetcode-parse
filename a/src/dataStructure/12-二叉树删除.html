@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const compare = {
+            less: -1,
+            equ: 0,
+            bigger: 1,
+        }
+        class Node {
+            constructor(key) {
+                this.key = key
+                this.left = null
+                this.right = null
+            }
+        }
+        class BTS {
+            constructor(key) {
+                this.root = null
+            }
+
+            insert(val) {
+                const node = new Node(val)
+                if (this.root === null) {
+                    this.root = node
+                } else {
+                    this.insertNode(this.root, val)
+                }
+            }
+
+            compareFn(node, curKey) {
+                if (node.key === curKey) {
+                    return compare.equ
+                }
+                return node.key > curKey ? compare.less : compare.bigger
+            }
+            insertNode(node, key) {
+                if (this.compareFn(node, key) === compare.less) {
+                    if (node.left === null) {
+                        node.left = new Node(key)
+                    } else {
+                        this.insertNode(node.left, key)
+                    }
+                } else if (this.compareFn(node, key) === compare.bigger) {
+                    if (node.right === null) {
+                        node.right = new Node(key)
+                    } else {
+                        this.insertNode(node.right, key)
+                    }
+                }
+            }
+            // 中序遍历
+            inOrderMap(callback) {
+                this.inOrderMapNode(this.root, callback)
+            }
+
+            inOrderMapNode(node, callback) {
+                if (node !== null) {
+                    this.inOrderMapNode(node.left, callback);
+                    callback(node.key)
+                    this.inOrderMapNode(node.right, callback)
+                }
+            }
+            // 先序遍历
+            preOrderMap(callback) {
+                this.preOrderMapNode(this.root, callback)
+            }
+
+            preOrderMapNode(node, callback) {
+                if (node !== null) {
+                    callback(node.key)
+                    this.preOrderMapNode(node.left, callback);
+                    this.preOrderMapNode(node.right, callback)
+                }
+            }
+            // 后序遍历
+            postOrderMap(callback) {
+                this.postOrderMapNode(this.root, callback)
+            }
+
+            postOrderMapNode(node, callback) {
+                if (node !== null) {
+                    callback(node.key)
+                    this.postOrderMapNode(node.left, callback);
+                    this.postOrderMapNode(node.right, callback)
+                }
+            }
+            min() {
+                return this.minNode(this.root).key
+            }
+            minNode(node) {
+                while (node.left !== null) {
+                    node = node.left
+                }
+                return node
+            }
+            max() {
+                return this.maxNode(this.root).key
+            }
+            maxNode(node) {
+                while (node.right !== null) {
+                    node = node.right
+                }
+                return node
+            }
+            search(key) {
+                return this.searchNode(this.root, key)
+            }
+            searchNode(node, key) {
+
+                if (node === null) {
+                    return false
+                }
+                console.log('this.compareFn(node, key)', this.compareFn(node, key))
+
+                if (this.compareFn(node, key) === compare.less) {
+                    return this.searchNode(node.left, key)
+                } else if (this.compareFn(node, key) === compare.bigger) {
+                    return this.searchNode(node.right, key)
+                } else {
+                    return true
+                }
+            }
+
+            remove(key) {
+                this.root = this.removeNode(this.root, key)
+            }
+
+            removeNode(node, key) {
+                if (node === null) {
+                    return null
+                }
+                if (this.compareFn(node, key) === compare.less) {
+                    node.left = this.removeNode(node.left, key)
+                    return node
+                } else if (this.compareFn(node, key) === compare.bigger) {
+                    node.right = this.removeNode(node.right, key)
+                    return node
+                } else {
+                    if (node.left === null && node.right === null) {
+                        node = null
+                        return node
+                    }
+                    if (node.left === null) {
+                        node = node.right
+                        return node
+                    } else if (node.right === null) {
+                        node = node.left
+                        return node
+                    }
+                    const target = this.minNode(node.right)
+                    node.key = target.key
+                    node.right = this.removeNode(node.right, target.key)
+                    return node
+                }
+            }
+
+        }
+        let bts = new BTS()
+
+        bts.insert(3)
+        bts.insert(2)
+        bts.insert(5)
+        bts.insert(4)
+        bts.insert(10)
+        bts.insert(8)
+        bts.insert(12)
+        // bts.preOrderMap((val) => {
+        //     console.log('val', val)
+        // })
+    </script>
+</body>
+
+</html>

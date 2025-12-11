@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /**
+     * 散列表 
+     * 
+     * 散列表就是 通过一个函数将任意类型的数据映射到一个数字，这个数字作为索引，通过索引访问数据
+     * 
+     * 散列表的实现
+     * 
+     * 1. 数组实现
+     * 2. 链表实现
+     * 3. 散列表实现
+     * 
+     */
+        class HashTable {
+            constructor() {
+                this.items = {}
+            }
+
+
+            toStringFn(item) {
+                if (item === null) {
+                    return 'NULL'
+                } else if (item === undefined) {
+                    return 'UNDEFINED'
+                } else if (typeof item === 'string' || item instanceof String) {
+                    return item
+                }
+                return JSON.stringify(item)
+            }
+            hashCode(key) {
+                /*
+                * 散裂表界内最好的实现方式，复杂度最低的
+                */
+                let str = this.toStringFn(key);
+                let hash = 5381
+                for (let i = 0; i < str.length; i++) {
+                    hash = (hash * 33) + str.charCodeAt(i)
+                }
+                return hash % 1013
+            }
+            set(key, value) {
+                let hashCode = this.hashCode(key)
+                let perryObj = new PerryObj(key, value)
+                this.items[hashCode] = perryObj;
+                return this.items[hashCode]
+            }
+
+            remove(key) {
+                let hashCode = this.hashCode(key);
+                if (this.items[hashCode] !== null) {
+                    delete this.items[hashCode]
+                    return true
+                }
+                return false
+            }
+
+            get(key) {
+                let hashCode = this.hashCode(key);
+                return this.items[hashCode] == null ? undefined : this.items[hashCode].value
+            }
+
+        }
+
+        class PerryObj {
+            constructor(key, value) {
+                this.key = key
+                this.value = value
+            }
+        }
+
+        let map = new HashTable()
+    </script>
+</body>
+
+</html>
